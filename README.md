@@ -27,7 +27,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/nando727/Taxi-V3.git
-cd <your-repo-folder>
+cd Taxi-V3
 ```
 
 Create and activate an environment (conda shown, but a regular venv works too):
@@ -61,7 +61,7 @@ Each plot opens in a window, and the script continues to the next experiment onc
 
 ## Changing Hyperparameters
 
-All settings are variables at the top of `quiz2.py`:
+All settings are variables at the top of `taxi.py`:
 
 | Variable | Default | Description |
 |---|---|---|
