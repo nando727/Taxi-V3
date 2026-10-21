@@ -4,6 +4,8 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
+import imageio
+
 alpha = 0.1            # learning rate
 gamma = 0.99           # discount factor
 epsilon_start = 1.0    # starting exploration rate
@@ -105,7 +107,7 @@ def train_agent(num_episodes=5000, learning_rate=alpha, discount_factor=gamma, e
     env.close()
     return agent, episode_rewards
 
-def plot_results(episode_rewards):
+def plot_results(episode_rewards, filename="results/baseline.png", title="Baseline: Reward per Episode"):
     os.makedirs("results", exist_ok=True)
     plt.figure(figsize=(10, 5))
     plt.plot(episode_rewards, alpha=0.3, label="Episode reward")
@@ -118,10 +120,10 @@ def plot_results(episode_rewards):
 
     plt.xlabel("Episode")
     plt.ylabel("Total reward")
-    plt.title(f"Discount factor gamma = {gamma}")
+    plt.title(title)
     plt.legend()
     plt.grid(True, alpha=0.3)
-    plt.savefig("results/baseline.png", dpi=150, bbox_inches="tight")
+    plt.savefig(filename, dpi=150, bbox_inches="tight")
     plt.show()
 
 def plot_alpha_comparison(results, window=100):
@@ -279,6 +281,10 @@ if __name__ == "__main__":
     for a, rewards in alpha_results.items():
         print(f"\nalpha={a}")
         print(f"Final avg reward (last 500 episodes): {np.mean(rewards[-500:]):.2f}")
+        
+    for a, rewards in alpha_results.items():
+        plot_results(rewards, filename=f"results/alpha_{a}.png", title=f"Learning rate a = {a}")
+
     plot_alpha_comparison(alpha_results)
 
     # E) discount factor experiment
@@ -317,5 +323,5 @@ if __name__ == "__main__":
     print(f"\nStates where both agents pick the same action: {100 * same:.1f}%")
 
     record_video(best_agent)
-    
+
     print("\nTraining complete!")
