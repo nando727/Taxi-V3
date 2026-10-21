@@ -117,7 +117,13 @@ Both agents converged to a near-optimal policy. The best configuration reached i
 - A low discount factor (γ = 0.5) learned slowest and finished lowest, since the +20 dropoff reward is heavily discounted by the time it reaches states far from the goal.
 - Higher learning rates (0.5, 0.9) and faster epsilon decays (0.99, 0.995) mostly made the agent learn faster, not reach a better final policy.
 
-See the PDF report for full discussion.
+## Trained agent vide
+
+
+
+https://github.com/user-attachments/assets/17febec0-cc9a-4321-94a7-77283a65fb44
+
+
 
 ## Troubleshooting
 
