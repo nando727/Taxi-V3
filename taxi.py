@@ -121,7 +121,7 @@ def plot_results(episode_rewards):
     plt.title(f"Discount factor gamma = {gamma}")
     plt.legend()
     plt.grid(True, alpha=0.3)
-    plt.savefig("results/gamma99.png", dpi=150, bbox_inches="tight")
+    plt.savefig("results/baseline.png", dpi=150, bbox_inches="tight")
     plt.show()
 
 def plot_alpha_comparison(results, window=100):
@@ -202,6 +202,28 @@ def plot_epsilon_comparison(results, window=100):
     fig.tight_layout()
     fig.savefig("results/epsilon_comparison.png", dpi=150, bbox_inches="tight")
     plt.show()
+
+def record_video(agent, filename="results/taxi_trained_agent.mp4", n_episodes=5, fps=4):
+    os.makedirs("results", exist_ok=True)
+    env = gym.make("Taxi-v3", render_mode="rgb_array")
+    frames = []
+
+    for i in range(n_episodes):
+        state, _ = env.reset(seed=100 + i)
+        frames.append(env.render())
+        done = False
+
+        while not done:
+            action = agent.get_action(state, training=False)
+            state, reward, terminated, truncated, _ = env.step(action)
+            frames.append(env.render())
+            done = terminated or truncated
+
+        frames.extend([frames[-1]] * fps)
+
+    env.close()
+    imageio.mimsave(filename, frames, fps=fps, macro_block_size=1)
+    print(f"\nSaved video to {filename}")
 
 
 def evaluate_agent(agent, n_episodes=eval_episodes, label="Agent"):
@@ -294,4 +316,6 @@ if __name__ == "__main__":
     same = np.mean(np.argmax(baseline_agent.q_table, axis=1) == np.argmax(best_agent.q_table, axis=1))
     print(f"\nStates where both agents pick the same action: {100 * same:.1f}%")
 
+    record_video(best_agent)
+    
     print("\nTraining complete!")
